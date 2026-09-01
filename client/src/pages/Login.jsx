@@ -2,6 +2,7 @@
 import {HiOutlineMicrophone, HiOutlineSparkles} from 'react-icons/hi'
 import {HiOutlineBolt, HiOutlineCodeBracket} from 'react-icons/hi2'
 import {FcGoogle} from 'react-icons/fc'
+import logo from '../assets/logo.png'
 const Login = () => {
 
     const features = [
@@ -42,7 +43,7 @@ const Login = () => {
 
                         <h1 className = 'mt-8 text-lg text-[#081028] leading-8 max-w-2xl'>
                              Build AI Assistants
-                             <span className ='block text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to bg-emerald-500'>
+                             <span className ='block text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to emerald-500'>
                                 For Any Website
                              </span>
                         </h1>
@@ -62,29 +63,48 @@ const Login = () => {
 
                    {/*right side content */}
 
-                   <div className = 'relative'>
-                      <div className ='absolute inset-0 bg-gradient-to-r from-purple-200/50 to-emerald-200/40 blur-[120px]'>
-                           <div className = 'relative rounded-[40px] border border-black/5 bg-white shadow-[0_20px_80px_rgba(0,0,0,06 )] p-8 overflow-hidden'>
-                              <div className = 'flex items-center justify-between'>
-                                  <div>
-                                     <h2 className = 'mt-2 text-3xl font-bold text-[#081028]'>
-                                         Features
-                                     </h2>
-                                  </div>
-                                             
-                                  <div className ='w-16 h-16 rounded-3xl bg-gradient-to-r from-purple-500 to-emerald-500 flex items center justify-center shadow-[0_10px_40px_rgba(139,92,246,0.25) p-3]'>
-                                      <img src="{logo}" alt="logo" className = 'w-full h-full object-contain' />
-                                  </div>
-                              </div>
-                           </div>
+                   <div className="relative">
+                    <div className="absolute inset-0 bg-gradient-to-r from-purple-200/50 to-emerald-200/40 blur-[120px]" />
+                      <div className="relative rounded-[40px] border border-black/5 bg-white shadow-[0_20px_80px_rgba(0,0,0,0.06)] p-8 overflow-hidden">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <h2 className="mt-2 text-3xl font-bold text-[#081028]">
+                               Features
+                            </h2>
+                         </div>
+
+                        <div className="w-16 h-16 rounded-3xl bg-gradient-to-r from-purple-500 to-emerald-500 flex items-center justify-center shadow-[0_10px_40px_rgba(139,92,246,0.25)] p-3">
+                         <img
+                          src={logo}
+                          alt="logo"
+                          className="w-full h-full object-contain"
+                        />
+
                       </div>
-                   </div>
+                     </div> 
 
-
-
-
+                         <div className = 'mt-10 space-y-5'>
+                            {
+                               features.map(({ icon, title, desc}, index) => (
+                                <div key = {index} className ='flex gap-5 rounded-3xl border border-black/5 bg-[#f8fafc] p-5'> 
+                                   <div className = 'min-w-[60px] h-[60px] rounded-2xl bg-gradient-to-r from-purple-500 to-emerald-500 text-white text-2xl flex items-center justify-center shadow-[0_10px_30px_rgba(139, 92, 246, 0.20)]'>
+                                      {icon}
+                                   </div>
+                                    <div> 
+                                        <h3 className = 'text-[#081028] text-lg font-semibold'>
+                                            {title}
+                                        </h3>
+                                        <p className = 'mt-2 text-sm leading-7 text-[#64748b]'>
+                                            {desc}
+                                        </p>
+                                    </div>
+                                </div>
+                               ))
+                            }
+                         </div>
+                  </div>
+               </div>
             </div>
-
         </div>
     </div>
   )
