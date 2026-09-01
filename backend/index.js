@@ -7,6 +7,7 @@ import cors from 'cors'
 
 import connectDB from './config/ConnectDB.js'
 import authRouter from './routes/auth.route.js'
+import userRouter from './routes/user.route.js'
 
 const app = express()
 app.use(cors({
@@ -22,6 +23,7 @@ app.get('/', (req, res) =>{
 })
 
 app.use("api/auth", authRouter)
+app.use("api/user", userRouter)
 
 const PORT = process.env.PORT
 app.listen(PORT, () =>{
