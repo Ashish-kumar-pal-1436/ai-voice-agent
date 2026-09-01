@@ -1,0 +1,30 @@
+
+import express from 'express'
+import dotenv from 'dotenv'
+dotenv.config()
+import cookieParser from 'cookie-parser'
+import cors from 'cors'
+
+import connectDB from './config/ConnectDB.js'
+import authRouter from './routes/auth.route.js'
+
+const app = express()
+app.use(cors({
+    origin: "http://localhost:5173",
+    credentials: true
+}))
+
+app.use(express.json())
+app.use(cookieParser())
+
+app.get('/', (req, res) =>{
+    res.json("Hello from server")
+})
+
+app.use("api/auth", authRouter)
+
+const PORT = process.env.PORT
+app.listen(PORT, () =>{
+     console.log(`server is running on port ${PORT}`)
+    //  connectDB() 
+})
