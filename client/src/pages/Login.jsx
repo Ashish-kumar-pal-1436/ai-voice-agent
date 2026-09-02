@@ -8,6 +8,7 @@ import { signInWithPopup } from 'firebase/auth'
 import axios from 'axios'
 import { ServerUrl } from '../App'
 import { useNavigate } from 'react-router-dom'
+import { toast} from 'react-hot-toast'
 const Login = ({setUser}) => {
 
     const navigate = useNavigate()
