@@ -1,13 +1,15 @@
 
 import logo from '../assets/logo.png'
 import { useNavigate } from 'react-router-dom'
-import {FiLogOut} from 'react-icons/fi'
+import {FiLogOut, FiMenu, FiX} from 'react-icons/fi'
 import { ServerUrl } from '../App'
 import axios from 'axios'
 import toast from 'react-hot-toast'
+import { useState } from 'react'
 
 const Navbar = ({user, setUser}) => {
     const navigate = useNavigate()
+    const [menuOpen, setMenuOpen]= useState(false)
     const handleLogout = async () =>{
          try {
              await axios.get(ServerUrl + "/api/auth/logout", {withCredentials: true})
@@ -51,7 +53,39 @@ const Navbar = ({user, setUser}) => {
                  </div>
             </div> }
 
+            {user && (
+                <button onClick={()=>setMenuOpen(!menuOpen)} className='md:hidden text-gray-600 hover:text-purple-500 transition-colors'>
+                   {menuOpen ? <FiX size={22} /> : <FiMenu size={22} />}
+                </button>
+            )}
+
       </div>
+
+          {menuOpen && (
+             <div className='md:hidden px-4 pb-4'>
+                <div className='bg-white rounded-2xl border border-orange-100 shadow-lg p-4'>
+                    <div className='flex items-center gap-3 pb-4 border-b border-orange-100'>
+                          <div className='w-8 h-8 rounded-full bg-gradient-to-r from-purple-500 to-emerald-500 flex items-center justify-center shrink-0'>
+                       <span className='text-white text-sm font-bold'>
+                         {user?.name.charAt(0).toUpperCase()}
+                       </span>
+                    </div>
+
+                     <div className='flex-1 overflow-hidden'>
+                      <p className='text-sm font-semibold text-gray-800 truncate'>{user.name}</p>
+                      <p className='text-xs text-gray-400 truncate'>{user.email}</p>
+                     </div> 
+                    </div>
+
+                    <div className='flex flex-col gap-3 mt-4'>
+                        <button className='w-full py-2.5 rounded-xl bg-gradient-to-r from-purple-500 to-emerald-500 text-white text-sm font-medium' onClick={()=>{navigate('/builder'); setMenuOpen(false)}}>Builder</button>
+                        <button className='w-full py-2.5 rounded-xl border border-orange-100 bg-white text-gray-700 text-sm font-medium' onClick={()=>{navigate('/billing'); setMenuOpen(false)}}>Billing</button>
+                    </div> 
+
+                    <button onClick={()=>{setMenuOpen(false); handleLogout()}} className='mt-4 w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-red-50 text-red-50 hover:bg-red-100 transition-colors text-sm'> <FiLogOut size={16} /> LogOut</button>
+                </div>
+             </div>
+          )}
     </div>
   )
 }
