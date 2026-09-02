@@ -8,7 +8,7 @@ import { signInWithPopup } from 'firebase/auth'
 import axios from 'axios'
 import { ServerUrl } from '../App'
 import { useNavigate } from 'react-router-dom'
-const Login = () => {
+const Login = ({setUser}) => {
 
     const navigate = useNavigate()
 
@@ -40,9 +40,11 @@ const Login = () => {
              const result = await signInWithPopup (auth, provider)
              const {displayName, email} = result.user
              const res = await axios.post(ServerUrl + "/api/auth/google", {name:displayName, email:email}, {withCredentials: true})
-             console.log(res.data)
+             setUser(res.data)
+             toast.success('Login Successfully')
              navigate('/')
           } catch (error) {
+            toast.error("Login Failed")
             console.log("Login Error :" , error)
           }
     }
