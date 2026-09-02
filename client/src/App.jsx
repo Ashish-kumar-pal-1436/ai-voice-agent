@@ -13,7 +13,6 @@ import { Toaster } from 'react-hot-toast'
 export const ServerUrl = "http://localhost:8000"
 
 const App = () => {
-
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
 
@@ -22,17 +21,12 @@ const App = () => {
       try {
         const res = await axios.get(
           ServerUrl + "/api/user/current-user",
-          {
-            withCredentials: true
-          }
+          { withCredentials: true }
         )
-
         setUser(res.data)
-
       } catch (error) {
         console.log("Current user error:", error)
         setUser(null)
-
       } finally {
         setLoading(false)
       }
@@ -46,7 +40,6 @@ const App = () => {
       <Toaster position="top-right" />
 
       <Routes>
-
         <Route
           path="/login"
           element={<Login setUser={setUser} />}
@@ -55,52 +48,25 @@ const App = () => {
         <Route
           path="/*"
           element={
-            <ProtectedRoute
-              user={user}
-              loading={loading}
-            >
-
-              <Navbar
-                setUser={setUser}
-                user={user}
-              />
+            <ProtectedRoute user={user} loading={loading}>
+              <Navbar setUser={setUser} user={user} />
 
               <Routes>
-                <Route
-                  path="/"
-                  element={<Home user={user} />}
-                />
-
+                <Route path="/" element={<Home user={user} />} />
                 <Route
                   path="/builder"
-                  element={
-                    <Builder
-                      user={user}
-                      setUser={setUser}
-                    />
-                  }
+                  element={<Builder user={user} setUser={setUser} />}
                 />
-
                 <Route
                   path="/billing"
-                  element={
-                    <Billing
-                      user={user}
-                      setUser={setUser}
-                    />
-                  }
+                  element={<Billing user={user} setUser={setUser} />}
                 />
+                {/* Moved inside nested <Routes> */}
+                <Route path="*" element={<Navigate to="/" replace />} />
               </Routes>
-
-              <Route
-                path="*"
-                element={<Navigate to="/" replace />}
-              />
-
             </ProtectedRoute>
           }
         />
-
       </Routes>
     </>
   )

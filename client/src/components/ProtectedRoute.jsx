@@ -1,5 +1,5 @@
 import { Navigate, replace } from "react-router-dom"
-const ProtectedRoute = (user, loading, children) => {
+const ProtectedRoute = ({user, loading, children}) => {
 
     if(loading){
          return (
@@ -14,7 +14,4 @@ const ProtectedRoute = (user, loading, children) => {
     return children
   
 }
-
-
-
 export default ProtectedRoute
