@@ -5,6 +5,7 @@ import Login from './pages/Login'
 import { useState } from 'react'
 import { useEffect } from 'react'
 import axios from 'axios'
+import ProtectedRoute from './components/ProtectedRoute'
 
 export const ServerUrl = "http://localhost:8000"
 const App = () => {
@@ -30,8 +31,15 @@ const App = () => {
   return (
     <>
       <Routes>
-         <Route  path='/' element={ <Home />} />
+         
          <Route  path= '/login' element={ <Login />} />
+         <Route  path='/*'  element={ <ProtectedRoute user={user} loading={loading} >
+
+            <Routes>
+              <Route  path='/' element={ <Home user={user} />} />
+            </Routes>
+            
+         </ProtectedRoute>} />
       </Routes> 
       <div>
 
