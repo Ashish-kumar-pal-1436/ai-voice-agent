@@ -1,7 +1,7 @@
 import axios from "axios"
 import { useState } from "react"
-import { FiPlus, FiTrash2 } from "react-icons/fi"
-import { ServerUrl } from "../App"
+import { FiCopy, FiPlus, FiTrash2 } from "react-icons/fi"
+import { ServerUrl , CLIENT_URL } from "../App"
 import toast from "react-hot-toast"
 
 const THEMES = [
@@ -104,7 +104,9 @@ const Builder = ({user, setUser}) => {
         (1000 * 60 * 60 * 24)
       )
     )
-   : 0;
+   : 0; 
+
+   const embedCode = `<script src="${CLIENT_URL}/assitant.js" data-user-id="${user?._id}"></script>`
 
   return (
     <div className="min-h-screen bg-[#f7f8fc] px-4 py-8">
@@ -190,14 +192,46 @@ const Builder = ({user, setUser}) => {
                                Example:
                             </p> 
                             <pre className="mt-3 bg-[#0b1020] text-emerald-400 rounded-xl p-3 text-xs font-mono overflow-x-auto">
-                                 {`<body> Your Website Content <script src="$
-                                 {CLIENT_URL}/assitant.js" data-user-id="${user?.
-                                  _id}"> </script> </body>`}
+                                {`<body>
+
+  Your Website Content
+
+  <script src="${CLIENT_URL}/assitant.js" data-user-id="${user?._id}
+  ></script>
+                                   
+</body>`}
                             </pre>
                        </div>
-                   </div>
 
-                </div>
+                       <p className="text-sm font-medium text-[#081028]">
+                          Embed Code
+                       </p>
+                   </div> 
+
+                   <div className="relative">
+                       <textarea 
+                       readOnly
+                       value={embedCode}
+                       className="w-full h-20 bg-[#0b1020] text-emerald-400 rounded-2xl p-4 text-sm font-mono resize-none outline-none"
+                        /> 
+
+                        <button 
+                        onClick={()=>{
+                          navigator.clipboard.writeText(embedCode)
+                           toast.success("Copied")
+                          }} 
+                         className="absolute top-4 right-4 w-10 h-10 rounded-xl bg-white flex items-center justify-center cursor-pointer">
+                          <FiCopy />
+                        </button>
+                   </div>
+                     
+                     <button
+                     onClick={()=>setEditAssitant(true)}
+                      className="mt-6 h-12 px-6 rounded-2xl bg-gradient-to-r from-purple-500 to-emerald-500 text-white font-medium">
+                        Edit Assitant
+                     </button>
+
+                </div>    
             )}
 
             {editAssitant && <div
