@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { FiPlus, FiTrash } from "react-icons/fi"
+import { FiPlus, FiTrash2 } from "react-icons/fi"
 
 const THEMES = [
    "light",
@@ -32,9 +32,10 @@ const Builder = ({user, setUser}) => {
   const [pageName, setPageName] = useState("")
   const [pagePath, setPagePath] = useState("")
   const [pageKeywords, setPageKeywords] = useState("")
+  const [loading, setLoading] = useState(false)
 
   const addPage = () =>{
-    if(!pageName || pagePath) return
+    // if(!pageName || pagePath) return 
 
     const newPage = {
         name: pageName,
@@ -48,6 +49,10 @@ const Builder = ({user, setUser}) => {
     setPageKeywords("")
   }
 
+  const removePage = (index) =>{
+      const updatePages = pages.filter((_,i) =>i !== index)
+      setPages(updatePages)
+  }
 
   return (
     <div className="min-h-screen bg-[#f7f8fc] px-4 py-8">
@@ -178,7 +183,7 @@ const Builder = ({user, setUser}) => {
                           </div> 
                           <button 
                           onClick={addPage}
-                          className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from bg-purple-500 to-emerald-500 text-white text-sm">
+                          className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from bg-purple-500 to-emerald-500 text-white text-sm cursor-pointer">
                               <FiPlus /> Add
                           </button>
                       </div> 
@@ -215,15 +220,26 @@ const Builder = ({user, setUser}) => {
                                 <div>
                                    <p className="font-medium">{page.name}</p>
                                    <p className="text-sm text-gray-400">{page.path}</p>
-                                   <p className="text-sm text-gray-400">{page.keywords}</p>
                                 </div>
-                                <button className="text-red-500">
-                                    <FiTrash />
+                                <button 
+                                 onClick={()=>removePage(index)}
+                                className="text-red-500">
+                                    <FiTrash2 />
                                 </button>
                              </div>
                           ))}
                       </div>
 
+                 </div>
+
+                 <div>
+                   <button 
+                     disabled={loading}
+                    className="w-full h-14 rounded-2xl bg-gradient-to-r from-purple-500 to-emerald-500 text-white font-semibold">
+                          {
+                            loading ? "Saving..." : user.isSetupComplete ? "Updade Assitant" : "Save Assitant"
+                          }
+                   </button>
                  </div>
 
             </div>
