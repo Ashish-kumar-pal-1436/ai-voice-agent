@@ -1,5 +1,8 @@
+import axios from "axios"
 import { useState } from "react"
 import { FiPlus, FiTrash2 } from "react-icons/fi"
+import { ServerUrl } from "../App"
+import toast from "react-hot-toast"
 
 const THEMES = [
    "light",
@@ -15,6 +18,8 @@ const TONES = [
 ]
 
 const Builder = ({user, setUser}) => {
+
+  const [editAssitant, setEditAssitant] = useState(!user?.isSetupComplete)
 
   const [assitantName, setAssitantName] = useState(user?.assitantName || "")
 
@@ -35,7 +40,7 @@ const Builder = ({user, setUser}) => {
   const [loading, setLoading] = useState(false)
 
   const addPage = () =>{
-    // if(!pageName || pagePath) return 
+    if(!pageName) return 
 
     const newPage = {
         name: pageName,
@@ -53,6 +58,53 @@ const Builder = ({user, setUser}) => {
       const updatePages = pages.filter((_,i) =>i !== index)
       setPages(updatePages)
   }
+   const saveAssitant= async () =>{
+       setLoading(true)
+       try {
+         const data = {
+            assitantName,
+            businessName,
+            businessType,
+            businessDescription,
+            tone,
+            theme,
+            geminiApiKey,
+            pages
+         }
+
+         const res = await axios.post(ServerUrl + "/api/user/save-assitant", data, {withCredentials: true})
+          setUser(res.data.user)
+          setEditAssitant(false)
+          toast.success("Assitant saved Successfully")
+          setLoading(false)
+       } catch (error) {
+         toast.error("Failed to save assitant")
+         console.log(error)
+         setLoading(false)
+       }
+   } 
+
+   const remainingMessages = 
+    Math.max (
+      0, 
+      (user?.requestLimit || 0) - 
+      (user?.totalMessages || 0)
+    )
+
+   const remainingDays = 
+   user?.proExpiresAt 
+    ? Math.max(
+      0,
+      Math.ceil(
+        (
+          new Date (
+            user.proExpiresAt
+          ) - new Date()
+        ) /
+        (1000 * 60 * 60 * 24)
+      )
+    )
+   : 0;
 
   return (
     <div className="min-h-screen bg-[#f7f8fc] px-4 py-8">
@@ -68,7 +120,88 @@ const Builder = ({user, setUser}) => {
                 </p>
             </div>
 
-            <div className="space-y-6">
+            {user.isSetupComplete && !editAssitant &&(
+                <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 mb-6">
+                   <p className="text-sm text-gray-400">Assitant</p>
+                   <h2 className="text-3xl font-bold text-[#081028] mt-1">{user.assitantName}</h2>
+                   <p className="text-gray-500 mt-3 leading-7">Your assitant is ready to use on your website.</p>
+
+                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6">
+                      <div className="rounded-2xl border border-gray-100 bg-[#f8fafc] p-4">
+                           <p className="text-sm text-gray-400">
+                                Current Plan
+                           </p>
+
+                           <h2 className="text-xl font-bold text-[#081028] mt-1 capitalize">
+                               {user?.plan}
+                           </h2>
+                      </div> 
+
+                      <div className="rounded-2xl border border-gray-100 bg-[#f8fafc] p-4">
+                           <p className="text-sm text-gray-400">
+                                Gemini Status
+                           </p>
+
+                           <h2 className={`text-xl font-bold mt-1 capitalize ${
+                               user?.geminiStatus === "active" 
+                               ? "text-emerald-600"
+                               : "text-amber-500"
+                           }
+                                
+                            `}>
+                               {user?.geminiStatus}
+                           </h2>
+                      </div>
+
+                      <div className="rounded-2xl border border-gray-100 bg-[#f8fafc] p-4">
+                           <p className="text-sm text-gray-400">
+                               {user?.plan === "free"
+                                 ? "Messages Left"
+                                 : "Plan Expiry"
+                               }
+                           </p>
+
+                           <h2 className="text-xl font-bold text-[#081028] mt-1 capitalize">
+                               {
+                                user?.plan === "free"
+                                ? remainingMessages 
+                                : `${remainingDays} Days`
+                               }
+                           </h2>
+                      </div>
+                   </div> 
+
+                   <div className="mt-7">
+                       <div className="mt-4 rounded-2xl bg-amber-50 border border-amber-200 p-4">
+                            <p className="text-sm font-semibold text-amber-900">
+                              Where to paste this script
+                            </p>
+
+                            <p className="text-sm text-amber-700 mt-2 leading-6">
+                               Paste this script before the closing
+                               {" "}
+                               <span className="font-semibold">
+                                  {"</body>"}
+                               </span> 
+                               {" "}
+                               tag of your website HTML File
+                               <br />
+                               <br />
+                               Example:
+                            </p> 
+                            <pre className="mt-3 bg-[#0b1020] text-emerald-400 rounded-xl p-3 text-xs font-mono overflow-x-auto">
+                                 {`<body> Your Website Content <script src="$
+                                 {CLIENT_URL}/assitant.js" data-user-id="${user?.
+                                  _id}"> </script> </body>`}
+                            </pre>
+                       </div>
+                   </div>
+
+                </div>
+            )}
+
+            {editAssitant && <div
+              className="space-y-6">
                 <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-6">
                    <h2 className="text-lg font-semibold mb-5">
                      Basic Information
@@ -234,15 +367,17 @@ const Builder = ({user, setUser}) => {
 
                  <div>
                    <button 
+                     onClick={saveAssitant}
                      disabled={loading}
-                    className="w-full h-14 rounded-2xl bg-gradient-to-r from-purple-500 to-emerald-500 text-white font-semibold">
+                     className="w-full h-14 rounded-2xl bg-gradient-to-r from-purple-500 to-emerald-500 text-white font-semibold">
                           {
                             loading ? "Saving..." : user.isSetupComplete ? "Updade Assitant" : "Save Assitant"
                           }
                    </button>
                  </div>
 
-            </div>
+            </div> 
+            }
          </div>
     </div>
   )
