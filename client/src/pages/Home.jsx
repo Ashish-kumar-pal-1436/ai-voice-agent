@@ -1,6 +1,34 @@
 
 import { useNavigate } from "react-router-dom"
 import AssitantPreview from "../components/AssitantPreview"
+import logo from '../assets/logo.png'
+
+const STEPS = [
+
+   {
+      step: "01",
+      title: "Sign up free",
+      desc: "Continue with Google and create your assitant instantly"
+   },
+
+   {
+      step: "02",
+      title: "Customize assitant",
+      desc: "set your business name, tone, voice and theme"
+   },
+
+   {
+      step: "03",
+      title: "Train your assitant",
+      desc: "Add business details and personalize responses."
+   },
+
+   {
+      step: "04",
+      title: "Embed anywhere",
+      desc: "Copy one script tag and add it to your website."
+   },
+]
 
 const Home = ({user}) => {
   const navigate = useNavigate()
@@ -49,6 +77,61 @@ const Home = ({user}) => {
                <AssitantPreview />
           </div>
        </section>
+
+       <section className="px-4 sm:px-6 lg:px-8 py-20 bg-white">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-14">
+
+                 <h2 className="text-3xl sm:text-4xl font-bold text-[#081028]">
+                      Get started in mintues
+                 </h2>
+
+                 <p className="text-gray-500 mt-3 text-sm sm:text-7xl-base">
+                     Simple setup No complicated integration
+                 </p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6" >
+                 {
+                  STEPS.map((s,ind) =>(
+                      <div key={ind} className="group bg-[#f8fafc] hover:bg-white border border-gray-100 rounded-[28px] p-7 transition-all hover:shadow-[0_15px_50px_rgba(0,0,0,0.06)]" > 
+                        <span className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-emerald-500" >{s.step}</span>
+
+                        <h3 className="mt-5 text-lg font-semibold text-[#081028]" >{s.title}</h3>
+
+                        <p className="mt-3 text-sm text-gray-500 leading-relaxed" >{s.desc}</p>
+                      </div >
+                  ))
+                 }
+            </div>
+
+          </div>
+       </section>
+
+       <footer className="bg-[#081028] px-6 py-10">
+         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-5 text-center sm:text-left">
+             <div>
+                 <div onClick={()=>navigate('/')}  className="flex items-center gap-2.5" >
+                                 <img src={logo} alt="logo" className='h-9 w-auto object-contain' />
+                                  <h1 className='font-bold text-xl text-gray-100 leading-none'>
+                                     Sunday{' '}
+                                     <span className='text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-emerald-500'>
+                                        AI
+                                     </span>
+                                 </h1>
+                   </div> 
+                   <p className="text-gray-400 text-sm mt-1">
+                      Voice AI assitant for websites
+                   </p>
+             </div>
+  
+             <p className="text-gray-500 text-sm">
+                {new Date().getFullYear()} SundayAI. All rights reserved.
+             </p>
+
+         </div>
+       </footer>
+
     </div>
   )
 }
