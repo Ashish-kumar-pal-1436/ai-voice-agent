@@ -1,4 +1,5 @@
 import { useState } from "react"
+import {CiMicrophoneOn} from 'react-icons/ci'
 
 const themes = {
 
@@ -104,7 +105,46 @@ const AssitantPreview = () => {
           <div>
             
           </div>
+          
+          <div className="relative z-20 flex flex-col items-center justify-between h-full px-5 py-6 sm:px-7 sm:py-8">
+              <div className="relative mt-1">
+                <div className={`absolute inset-0 scale-[2] rounded-full blur-[80px] bg-gradient-to-r ${current.orb} opacity-60`} />
+                <div className={`relative w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-full bg-gradient-to-br ${current.orb} shadow-[0_0_120px_rgba(255, 255,255, 0.15)] animate-pulse before:absolute before:inset-0 before:rounded-full before:bg-white/20 before:blur-xl`} />
+              </div>
 
+              <div className="text-center">
+                   <h2 className={`text-[20px] sm:text-[26px] md:text-[32px] font-semibold ${current.text}`}>
+                     Hello ! I'm Sunday AI
+                   </h2>
+                   <p className={`mt-4 text-[13px] sm:text-[15px] md:text[16px] leading-6 sm:leading-7 max-w-[280px] mx-auto ${current.sub}`}>
+                     Your smart voice assitant.
+                     <br />
+                     Ask anything about your website.
+                   </p>
+
+                   <div className="mt-6 sm:mt-8">
+
+                    <p className={`text-sm sm:text-base font-medium ${current.listening}`}>
+                        Listening...
+                    </p>
+                      
+                      <div className="flex items-end justify-center gap-1 sm:gap-1.5 mt-3 sm:mt-4">
+                           <span className={`w-1 h-3 rounded-full ${current.wave} animate-pulse`} /> 
+                           <span className={`w-1 h-6 rounded-full ${current.wave} animate-pulse`} />
+                           <span className={`w-1 h-2 rounded-full ${current.wave} animate-pulse`} />
+                           <span className={`w-1 h-7 rounded-full ${current.wave} animate-pulse`} />
+                           <span className={`w-1 h-4 rounded-full ${current.wave} animate-pulse`} />
+                           <span className={`w-1 h-2 rounded-full ${current.wave} animate-pulse`} />
+                      </div>
+                   </div>
+              </div> 
+              <div className="relative mb-1">
+                <div className={`absolute inset-0 rounded-full blur-2xl opacity-60 ${current.wave}`} /> 
+                <button className={`relative w-12 h-12 sm:w-15 sm:h-15 md:w-18 md:h-18 rounded-full bg-gradient-to-br ${current.button} ${current.micGlow} flex items-center justify-center`}>
+                    <CiMicrophoneOn size={25} className="text-[#000000b9]" />
+                </button>
+              </div>
+          </div>
           
        </div>
     </div>
