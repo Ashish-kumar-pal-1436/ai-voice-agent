@@ -67,4 +67,27 @@
    `
 
    document.body.appendChild(popup);
+
+   // floating Button
+
+   const button = document.createElement("button")
+
+   button.className = `sunday-btn theme-${theme}`
+
+   button.innerHTML =`
+      <img 
+        src="http://localhost:5173/logo.png"
+        alt="logo"
+      />`;
+    document.body.appendChild(button)
+
+    //toggle popup
+
+    let open = false
+
+    button.onclick = ()=>{
+      open = !open;
+      popup.style.display = open ? "flex" : "none";
+    }
+
 })();
