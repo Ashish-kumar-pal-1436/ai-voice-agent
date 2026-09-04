@@ -3,7 +3,7 @@
    const script = document.currentScript;
    const userId = script?.dataset?.userId
    const theme= "dark"
-   const assistantConfig = null 
+   let assistantConfig = null;
 
    //load css
    const link = document.createElement("link")
@@ -89,5 +89,37 @@
       open = !open;
       popup.style.display = open ? "flex" : "none";
     }
+
+    //load assistant
+
+    const loadAssistant = async () =>{
+       try {
+          const res = await fetch(`http://localhost:8000/api/assitant/
+            config/${userId}`)
+
+            const data = await res.json() 
+
+           console.log(data)
+
+           if(data){
+             
+             assistantConfig = data.user
+             applyConfig()
+          }
+       } catch (error) {
+         console.log("Assistant Load Error", error)
+       }
+    }
+
+    const applyConfig = ()=>{
+
+      if(!assistantConfig) return;
+
+       popup.className = `sunday=popup theme${assistantConfig.theme}`
+       button.className = `sunday-btn theme-${assistantConfig.theme}`
+    }
+
+    loadAssistant ()
+
 
 })();
