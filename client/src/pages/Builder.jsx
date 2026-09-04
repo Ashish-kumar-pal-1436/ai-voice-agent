@@ -106,7 +106,7 @@ const Builder = ({user, setUser}) => {
     )
    : 0; 
 
-   const embedCode = `<script src="${CLIENT_URL}/assitant.js" data-user-id="${user?._id}"></script>`
+   const embedCode = `<script src="${CLIENT_URL}/assistant.js" data-user-id="${user?._id}"></script>`
 
   return (
     <div className="min-h-screen bg-[#f7f8fc] px-4 py-8">
