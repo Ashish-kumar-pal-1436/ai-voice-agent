@@ -13,3 +13,11 @@ export const getAssistantConfig = async (req, res) =>{
         return res.status(500).json({message: `Assistant  Config Failed ${error}`})
     }
 }
+
+export const askAssistant = async (req, res) => {
+    try {
+        const {message, userId} = req.body
+    } catch (error) {
+        
+    }
+}
