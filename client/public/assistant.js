@@ -141,5 +141,100 @@
 
     loadAssistant ()
 
+    // Element
+
+    const status = popup.querySelector(".sunday-status")
+
+    const wave = popup.querySelector(".sunday-wave")
+
+    const userText = popup.querySelector(".sunday-user-text")
+
+    const aiText = popup.querySelector(".sunday-ai-text")
+
+    const mic  = popup.querySelector(".sunday-mic")
+
+    // text-speech
+
+    const speak = (text) =>{
+       window.speechSynthesis.cancel();
+
+       // Show AI response
+
+       aiText.innerHTML = "AI Speaking...."
+       const speech = new SpeechSynthesisUtterance(text)
+
+       speech.lang = "hi-IN"
+       speech.rate = 1
+       speech.pitch = 1
+       speech.volume = 1
+
+       // Voice end
+
+       speech.onend = () => {
+         status.innerHTML = "Tap button to Speak"
+         wave.style.opacity = 0 
+       } 
+
+       // Start speaking
+       window.speechSynthesis.speak(
+          speech
+       )
+    }
+
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+
+    if(SpeechRecognition){
+      
+      const recognition = new SpeechRecognition()
+
+      recognition.lang = "en-US"
+      recognition.continous = false
+      recognition.interimResults = false
+
+      mic.onclick= ()=>{
+        wave.style.opacity = "1"
+        status.innerText = "Listening..."
+        userText.innerText = ""
+        aiText.innerText = ""
+        recognition.start()
+      }
+
+      recognition.onresult = (e)=>{
+        const text = e.results[0][0].transcript
+
+        userText.innerText = "You: " + text
+        recognition.stop() 
+
+        setTimeout( async () => {
+           try {
+              status.innerText = "Thinking..."
+              const res = await fetch('http://localhost:8000/api/assistant/ask', {
+                 method: "POST",
+                 headers: {
+                  "Content-Type":
+                  "application/json"
+                 } ,
+                 body: JSON.stringify({
+                  message:text,
+                  userId
+                 })
+              })
+
+              const data = await res.json()
+              console.log(data)
+
+              if(data.success){
+                if(data.action === "navigate"){
+                  
+                }
+              }
+           } catch (error) {
+            
+           }
+        } )
+      }
+    }
+
+
 
 })();
