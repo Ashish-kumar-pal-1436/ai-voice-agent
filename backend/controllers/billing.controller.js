@@ -1,7 +1,7 @@
-import { razorpay } from "../config/razorPay"
-import Billing from "../models/billing.model"
+import { razorpay } from "../config/razorPay.js"
+import Billing from "../models/billing.model.js"
 import crypto from 'crypto'
-import User from "../models/user.model"
+import User from "../models/user.model.js"
 
 
 export const createOrder = async (req, res) =>{

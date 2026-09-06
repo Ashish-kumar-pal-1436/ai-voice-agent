@@ -1,8 +1,25 @@
+import axios from "axios";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { ServerUrl } from "../App";
+import toast from "react-hot-toast";
 
 
 
 
-const Billing = ({user}) => {
+const Billing = ({user, setUser}) => {
+
+  const navigate = useNavigate()
+
+  useEffect(() =>{
+     if(user && !user.isSetupComplete){
+        toast.error(
+          "Setup your Assistant first"
+        ) 
+
+        navigate("/builder")
+     }
+  }, [])
 
      const remainingMessages = 
     Math.max (
@@ -25,6 +42,42 @@ const Billing = ({user}) => {
       )
     )
    : 0; 
+
+   const handlePay = async () => {
+     try {
+       const res = await axios.post(ServerUrl + "/api/billing/order" ,
+          {plan: "pro"}, {withCredentials: true}) 
+
+          const order = res.data.order 
+
+          const options = {
+            key:import.meta.env.VITE_RAZORPAY_KEY_ID,
+            amount:order.amount,
+            currency:order.currency,
+            name:"SundayAI",
+            description:"Pro Plan",
+            order_id:order.id,
+            handler:async(response) =>{
+              const verifyRes = await axios.post( ServerUrl + "/api/billing/verify" , response , {withCredentials:true})
+              if(verifyRes.data.success){
+                toast.success("Payment successfully")
+                setUser(verifyRes.data.user)
+              }
+            },
+            theme: {
+              color: "#7c3aed"
+            },
+
+          } 
+
+          const razorpay = new window.Razorpay(options)
+
+          razorpay.open()
+     } catch (error) {
+      toast.error("Payment Failed")
+      console.log(error)
+     }
+   }
 
   return (
     <div className="min-h-screen bg-[#f7f8fc] px-4 py-10">
@@ -129,7 +182,9 @@ const Billing = ({user}) => {
                                  <li>Premium Support</li>
                               </ul> 
 
-                              <button disabled={user?.plan === "pro"} className={`mt-8 h-14 w-full rounded-2xl font-semibold transition ${user?.plan === 'pro' 
+                              <button 
+                              onClick={handlePay}
+                              disabled={user?.plan === "pro"} className={`mt-8 h-14 w-full rounded-2xl font-semibold transition ${user?.plan === 'pro' 
                                 ? "bg-emerald-200 text-black cursor-default"
                                 : "bg-white text-[#081028] cursor-pointer"
                               }`}>

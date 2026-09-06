@@ -1,6 +1,6 @@
 
 import express from 'express' 
-import { createOrder, verifyBilling } from '../controllers/billing.controller'
+import { createOrder, verifyBilling } from '../controllers/billing.controller.js'
 
 const billingRouter = express.Router()
 
