@@ -265,17 +265,17 @@
 
 /* dark theme */
 
-.theme.dark{
+.theme-dark{
     background: #050816; 
-    border: 1px solid rgba(255,255,255,0,08);
+    border: 1px solid rgba(255,255,255,0.08);
 }
 
-.theme.dark .sunday-overlay{
+.theme-dark .sunday-overlay{
     background: radial-gradient(circle at top, rgba(168, 85, 247, 0.18), transparent 45%);
 }
 
-.theme.dark .sunday-orb,
-.theme.dark .sunday-orb-glow{
+.theme-dark .sunday-orb,
+.theme-dark .sunday-orb-glow{
     background:
      linear-gradient(
         135deg,
@@ -285,34 +285,34 @@
      );
 }
 
-.theme.dark .sunday-title{
+.theme-dark .sunday-title{
     color: white;
 }
 
-.theme.dark .sunday-sub{
+.theme-dark .sunday-sub{
     color: rgba(255, 255, 255, .68);
 }
 
-.theme.dark .sunday-status{
+.theme-dark .sunday-status{
     color: #22e3a6;
 }
 
-.theme.dark .sunday-wave span{
+.theme-dark .sunday-wave span{
     background: #22e3a6;
 }
 
-.theme.dark .sunday-user-text{
+.theme-dark .sunday-user-text{
     color: white;
 }
 
-.theme.dark .sunday-ai-text {
+.theme-dark .sunday-ai-text {
     color: rgba(255, 255, 255, .72);
 }
 
 /* dark theme buttons */
 
-.theme.dark .sunday-mic,
-.theme.dark.sunday-btn{
+.theme-dark .sunday-mic,
+.theme-dark.sunday-btn{
     background: 
     linear-gradient(
         135deg,

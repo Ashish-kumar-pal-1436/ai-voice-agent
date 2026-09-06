@@ -2,7 +2,7 @@
    //userData
    const script = document.currentScript;
    const userId = script?.dataset?.userId
-   const theme= "dark"
+   const theme= "light"
    let assistantConfig = null;
 
    //load css
@@ -14,7 +14,7 @@
    // Create Popup
 
    const popup = document.createElement("div")
-   popup.className = `sunday-popup theme ${theme}`
+   popup.className = `sunday-popup theme-${theme}`
 
    popup.innerHTML = ` 
 
@@ -94,8 +94,7 @@
 
     const loadAssistant = async () =>{
        try {
-          const res = await fetch(`http://localhost:8000/api/assitant/
-            config/${userId}`)
+          const res = await fetch(`http://localhost:8000/api/assistant/config/${userId}`)
 
             const data = await res.json() 
 
@@ -111,13 +110,34 @@
        }
     }
 
-    const applyConfig = ()=>{
+    // const applyConfig = ()=>{
 
-      if(!assistantConfig) return;
+    //   if(!assistantConfig) return;
 
-       popup.className = `sunday=popup theme${assistantConfig.theme}`
-       button.className = `sunday-btn theme-${assistantConfig.theme}`
-    }
+    //    popup.className = `sunday-popup theme-${assistantConfig.theme}`
+    //    button.className = `sunday-btn theme-${assistantConfig.theme}`
+    // } 
+
+    const applyConfig = ()=>{ 
+
+    if(!assistantConfig) return; 
+
+    const selectedTheme = assistantConfig.theme?.toLowerCase();
+
+    popup.className = `sunday-popup theme-${selectedTheme}`;
+    button.className = `sunday-btn theme-${selectedTheme}`;
+
+    const title = popup.querySelector('.sunday-title')
+    title.innerHTML = `Hello I'm ${assistantConfig.assistantName}` 
+
+    const subTitle = popup.querySelector('.sunday-sub')
+    subTitle.innerHTML = `  
+       Welcome to 
+       ${assistantConfig.businessName}.
+       <br /> 
+       Ask anything about your website.
+    `
+}
 
     loadAssistant ()
 
