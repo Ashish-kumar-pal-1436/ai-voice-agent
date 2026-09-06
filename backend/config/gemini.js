@@ -1,5 +1,5 @@
 
-const Gemini_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash:generateContent"
+const Gemini_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent"
 
 export const generateGeminiResponse = async ({
      prompt,
@@ -62,7 +62,7 @@ export const generateGeminiResponse = async ({
     "active"
     await user.save() 
 
-    const data = response.json() 
+    const data = await response.json() 
     const text = data.candidates?.[0]
      ?.content?.parts?.[0]
      ?.text; 

@@ -8,6 +8,7 @@ import connectDB from './config/ConnectDB.js'
 import authRouter from './routes/auth.route.js'
 import userRouter from './routes/user.route.js'
 import assistantRouter from './routes/assistant.route.js'
+import billingRouter from './routes/billing.routes.js'
 
 dotenv.config()
 
@@ -36,6 +37,7 @@ app.get('/', (req, res) => {
 
 app.use("/api/auth", privateCors, authRouter)
 app.use("/api/user", privateCors, userRouter)
+app.use("api/billing",privateCors, billingRouter)
 app.use("/api/assistant", publicCors, assistantRouter)
 
 const PORT = process.env.PORT || 8000

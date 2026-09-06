@@ -225,16 +225,30 @@
 
               if(data.success){
                 if(data.action === "navigate"){
-                  
+                    setTimeout(() => {
+                      window.location.href = data.path
+                    }, 1500);
+                } else{
+                  speak(data.aiResponse)
                 }
+              } else{
+                 speak("Response Error: Check your plan")
               }
            } catch (error) {
-            
+               console.log(error)
+               speak("Server Error")
            }
-        } )
+        }, 600)
       }
+
+      recognition.onerror = () =>{
+        status.innerText = 
+        "Tap button to speak";
+
+        wave.style.opacity = "0";
+      }
+    } else{
+      status.innerText = "Speech Recognition not supported"
     }
-
-
 
 })();
